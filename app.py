@@ -1,17 +1,21 @@
 from fastapi import FastAPI, HTTPException
-from fastapi.responses import FileResponse, JSONResponse
+from fastapi.responses import FileResponse
 from pydantic import BaseModel
 import subprocess
-import tempfile
-import os
 import uuid
+import os
 
 app = FastAPI()
 
-VOICE_MODEL = "/app/voices/pt_BR-faber-medium.onnx"
+VOICES = {
+    "pt_BR-faber-medium": "/app/voices/pt_BR-faber-medium.onnx",
+    "pt_BR-jeff-medium": "/app/voices/pt_BR-jeff-medium.onnx",
+    "pt_BR-edresson-medium": "/app/voices/pt_BR-edresson-medium.onnx",
+}
 
 class TTSRequest(BaseModel):
     text: str
+    voice: str = "pt_BR-faber-medium"
 
 @app.get("/")
 def root():
@@ -21,10 +25,8 @@ def root():
 def voices():
     return {
         "voices": [
-            {
-                "id": "pt_BR-faber-medium",
-                "language": "pt-BR"
-            }
+            {"id": voice_id, "language": "pt-BR"}
+            for voice_id in VOICES.keys()
         ]
     }
 
@@ -34,11 +36,15 @@ def tts(req: TTSRequest):
     if not text:
         raise HTTPException(status_code=400, detail="Texto vazio")
 
+    if req.voice not in VOICES:
+        raise HTTPException(status_code=400, detail="Voz inválida")
+
+    model_path = VOICES[req.voice]
     out_file = f"/tmp/{uuid.uuid4()}.wav"
 
     try:
-        process = subprocess.run(
-            ["piper", "--model", VOICE_MODEL, "--output_file", out_file],
+        subprocess.run(
+            ["piper", "--model", model_path, "--output_file", out_file],
             input=text.encode("utf-8"),
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,

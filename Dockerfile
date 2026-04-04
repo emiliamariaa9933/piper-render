@@ -16,11 +16,24 @@ WORKDIR /app
 
 COPY app.py /app/app.py
 
-# baixa voz pt-BR do Piper
 RUN mkdir -p /app/voices
+
+# faber
 RUN curl -L -o /app/voices/pt_BR-faber-medium.onnx \
     https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx
 RUN curl -L -o /app/voices/pt_BR-faber-medium.onnx.json \
     https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/faber/medium/pt_BR-faber-medium.onnx.json
+
+# jeff
+RUN curl -L -o /app/voices/pt_BR-jeff-medium.onnx \
+    https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/jeff/medium/pt_BR-jeff-medium.onnx
+RUN curl -L -o /app/voices/pt_BR-jeff-medium.onnx.json \
+    https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/jeff/medium/pt_BR-jeff-medium.onnx.json
+
+# edresson
+RUN curl -L -o /app/voices/pt_BR-edresson-medium.onnx \
+    https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/edresson/medium/pt_BR-edresson-medium.onnx
+RUN curl -L -o /app/voices/pt_BR-edresson-medium.onnx.json \
+    https://huggingface.co/rhasspy/piper-voices/resolve/main/pt/pt_BR/edresson/medium/pt_BR-edresson-medium.onnx.json
 
 CMD ["sh", "-c", "uvicorn app:app --host 0.0.0.0 --port $PORT"]
