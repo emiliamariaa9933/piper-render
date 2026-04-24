@@ -11,6 +11,12 @@ VOICES = {
     "pt_BR-faber-medium": "/app/voices/pt_BR-faber-medium.onnx",
     "pt_BR-jeff-medium": "/app/voices/pt_BR-jeff-medium.onnx",
     "pt_BR-edresson-medium": "/app/voices/pt_BR-edresson-medium.onnx",
+    "en_US-hfc_male-medium": "/app/voices/en_US-hfc_male-medium.onnx",
+    "en_US-joe-medium": "/app/voices/en_US-joe-medium.onnx",
+    "en_US-kristin-medium": "/app/voices/en_US-kristin-medium.onnx",
+    "en_US-sam-medium": "/app/voices/en_US-sam-medium.onnx",
+    "es_ES-sharvard-medium": "/app/voices/es_ES-sharvard-medium.onnx",
+    "es_ES-mls_9972-medium": "/app/voices/es_ES-mls_9972-medium.onnx"
 }
 
 class TTSRequest(BaseModel):
